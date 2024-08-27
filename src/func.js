@@ -1,2 +1,5 @@
-const qq = (a) => a * a
-export default qq
+const print = () =>{
+    console.log(' i can print "hello world" !');
+    
+}
+export default print
