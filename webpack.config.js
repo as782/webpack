@@ -10,6 +10,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         clean: true, // 清除dist文件夹
     },
+    devtool: 'inline-source-map',
     plugins: [
         new HtmlWebpackPlugin({
             title: 'HTMLPlugin管理输出aaa',
@@ -20,4 +21,7 @@ module.exports = {
         })
     ],
     mode: 'development',
+    devServer:{
+        static: './dist'
+    }
 }
