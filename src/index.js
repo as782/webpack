@@ -9,6 +9,11 @@ import loadScriptImage from './assets/loadScript.jpg'
 import imageText from './assets/imageText.txt'
 // 样式表
 import './style/main.css';
+
+// 测试动态导入
+import './testImport.js'
+
+
 function component() {
     const element = document.createElement('div');
     const btn = document.createElement('button');
@@ -49,11 +54,13 @@ function component() {
     questionImg.src = questionImage;
     container.appendChild(questionImg);
 
-   
+
 
     element.appendChild(container);
 
-
+    // 测试动态导入, 预解析
+    import(/* webpackChunkName:'testprefetch', webpackPrefetch:true */ './testprefetch.js')
+    // import(/* webpackChunkName:'testprefetch', webpackPreload:true */ './testprefetch.js')
     return element;
 }
 

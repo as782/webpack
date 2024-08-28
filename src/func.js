@@ -5,4 +5,5 @@ const print = () =>{
     alert('hello wsorld');
     
 }
+ 
 export default print
