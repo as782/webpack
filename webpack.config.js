@@ -33,7 +33,7 @@ module.exports = {
 
     },
     output: {
-        filename: '[name]-bundle.js',
+        filename: '[name]-[contenthash]-bundle.js',
         path: path.resolve(__dirname, 'dist'),
         clean: true, // 清除dist文件夹,
         assetModuleFilename: 'assets/[name]-[hash][ext]'
@@ -99,8 +99,16 @@ module.exports = {
     optimization: {
         minimizer: [new CssMinimizerPlugin()], // mode为production时，默认使用css-minimizer-webpack-plugin压缩css
         splitChunks: {
-            chunks: 'all',
+            // chunks: 'all',
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
         },
+        runtimeChunk: 'single',
         
     }
 }

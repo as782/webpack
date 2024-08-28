@@ -187,6 +187,7 @@ loader 用于将非 JavaScript 文件转换为 webpack 可以理解的模块。w
 
 插件用于扩展 webpack 的功能，可以在 webpack 的构建过程中执行各种任务。插件通常用于优化构建过程、生成额外的文件等。插件通常需要通过 npm 安装，然后在 webpack 配置文件中引入并使用。
 常用的插件：
+
 - html-webpack-plugin
 - min-css-extract-plugin
 - css-minimizer-webpack-plugin
@@ -255,5 +256,25 @@ const BundleAnalyzerPlugin =
 module.exports = {
   //···
   plugins: [new BundleAnalyzerPlugin()],
+};
+```
+
+### 第三方库的分离
+
+webpack 默认会将第三方库（如 lodash）打包到每一个入口 chunk 中，这会导致重复打包。为了解决这个问题，可以使用 SplitChunksPlugin 插件，将第三方库分离到单独的 chunk 中。
+
+```js
+module.exports = {
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+        },
+      },
+    },
+  },
 };
 ```

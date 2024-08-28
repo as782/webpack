@@ -69,7 +69,7 @@ function component() {
 document.body.appendChild(component());
 
 const testCssLoader = document.createElement('div');
-testCssLoader.textContent = '测试css-loader';
+testCssLoader.textContent = '测试css-loadersss';
 testCssLoader.classList.add('main');
 document.body.appendChild(testCssLoader);
 
