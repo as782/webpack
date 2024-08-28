@@ -1,5 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// 单独提取css
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// 压缩css
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
     entry: {
         index: './src/index.js',
@@ -37,6 +41,16 @@ module.exports = {
                         maxSize:4*1024 // 小于4kb的图片转为base64，大于4kb的图片输出到对应目录
                     }
                 }
+            },
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
+
+            },
+            // 字体
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                type: 'asset/resource',
             }
         ]
     },
@@ -47,10 +61,18 @@ module.exports = {
             template: './index.html',
             filename: 'app.html'
 
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'styles/[name]-[contenthash].css',
+            chunkFilename: "[id].css",
         })
     ],
-    mode: 'development',
+    mode: 'production',
     devServer: {
         static: './dist'
+    },
+    optimization:{
+        minimizer:[new CssMinimizerPlugin()], // mode为production时，默认使用css-minimizer-webpack-plugin压缩css
+      
     }
 }

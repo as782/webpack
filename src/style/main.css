@@ -1,0 +1,26 @@
+@font-face {
+    font-family: "AliFont";
+    src: url(../font/alifont.woff) format("woff"),url(../font/alifont2.woff2) format("woff2");
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+.main{
+   
+ 
+    width: 80%;
+    height: 100px;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    text-align: center;
+    line-height: 100px;
+    font-size: 2rem;
+    /* font-weight: bold; */
+    font-family: "AliFont";
+    background: url(../assets/loadScript.jpg) no-repeat center center;
+}

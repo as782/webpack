@@ -1,17 +1,20 @@
 
-// import _ from 'lodash';
-import { join } from "lodash-es";
+import _ from 'lodash';
+// import { join } from "lodash-es";
 import printMe from './func.js';
 import tcpImage from './assets/tcp1.jpeg'
 import questionImage from './assets/question.png'
 import QQSvg from './assets/QQ.svg'
 import loadScriptImage from './assets/loadScript.jpg'
 import imageText from './assets/imageText.txt'
+// 样式表
+import './style/main.css';
 function component() {
     const element = document.createElement('div');
     const btn = document.createElement('button');
     // 执行这一行需要引入 lodash（目前通过 script 脚本引入）
-    element.innerHTML = join(['Hello', 'webpack'], ' ');
+    // element.innerHTML = join(['Hello', 'webpack'], ' ');
+    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
     btn.innerHTML = '点我输出数据在控制台!';
     btn.onclick = printMe;
     element.appendChild(btn);
@@ -57,3 +60,9 @@ function component() {
 
 
 document.body.appendChild(component());
+
+const testCssLoader = document.createElement('div');
+testCssLoader.textContent = '测试css-loader';
+testCssLoader.classList.add('main');
+document.body.appendChild(testCssLoader);
+

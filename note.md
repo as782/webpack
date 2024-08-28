@@ -165,3 +165,21 @@ module.exports = {
 ```
 
 - 资源输出的路径和文件名可以通过配置 output 中的 **assetModuleFilename** 属性来指定。也可以在 rules 中通过配置 **generator** 属性来 filename 指定。
+
+
+## 资源管理
+webpack中默认能够解析的文件类型有：.js、.json，除此之外的其他类型文件需要通过loader进行解析。
+### loader
+loader 用于将非 JavaScript 文件转换为 webpack 可以理解的模块。webpack 本身只能理解 JavaScript，其他类型的文件需要通过 loader 进行转换。loader 可以链式调用，从后往前执行。
+1. css-loader
+2. style-loader
+3. babel-loader
+4. ts-loader
+5. webpack5 内置了 file-loader 和 url-loader，用于处理图片、字体等资源文件。可以配置类型type:asset/resource 或 asset/inline ,或 asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。
+6. thread-loader 多进程打包，可以加快打包速度
+- **babel-loader** : 将 ES6+ 代码转换为 ES5 代码，以便在旧版浏览器中运行。需要安装 @babel/core、@babel/preset-env 和 babel-loader，详情见 [babel-loader](https://www.webpackjs.com/loaders/babel-loader/)。
+
+### plugins
+插件用于扩展 webpack 的功能，可以在 webpack 的构建过程中执行各种任务。插件通常用于优化构建过程、生成额外的文件等。插件通常需要通过 npm 安装，然后在 webpack 配置文件中引入并使用。
+
+## 分割代码
