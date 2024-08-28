@@ -4,6 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // 压缩css
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+
+// 打包分析
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = {
     entry: {
         // index: './src/index.js',
@@ -26,7 +29,7 @@ module.exports = {
 
         // import() 懒加载分离模块
         index: './src/index.js',
-        func: "./src/func.js"
+        // func: "./src/func.js"
 
     },
     output: {
@@ -85,7 +88,9 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'styles/[name]-[contenthash].css',
             
-        })
+        }),
+        
+        new BundleAnalyzerPlugin()
     ],
     mode: 'development',
     devServer: {

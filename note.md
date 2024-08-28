@@ -166,20 +166,94 @@ module.exports = {
 
 - 资源输出的路径和文件名可以通过配置 output 中的 **assetModuleFilename** 属性来指定。也可以在 rules 中通过配置 **generator** 属性来 filename 指定。
 
-
 ## 资源管理
-webpack中默认能够解析的文件类型有：.js、.json，除此之外的其他类型文件需要通过loader进行解析。
+
+webpack 中默认能够解析的文件类型有：.js、.json，除此之外的其他类型文件需要通过 loader 进行解析。
+
 ### loader
+
 loader 用于将非 JavaScript 文件转换为 webpack 可以理解的模块。webpack 本身只能理解 JavaScript，其他类型的文件需要通过 loader 进行转换。loader 可以链式调用，从后往前执行。
+
 1. css-loader
 2. style-loader
 3. babel-loader
 4. ts-loader
-5. webpack5 内置了 file-loader 和 url-loader，用于处理图片、字体等资源文件。可以配置类型type:asset/resource 或 asset/inline ,或 asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。
+5. webpack5 内置了 file-loader 和 url-loader，用于处理图片、字体等资源文件。可以配置类型 type:asset/resource 或 asset/inline ,或 asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。
 6. thread-loader 多进程打包，可以加快打包速度
+
 - **babel-loader** : 将 ES6+ 代码转换为 ES5 代码，以便在旧版浏览器中运行。需要安装 @babel/core、@babel/preset-env 和 babel-loader，详情见 [babel-loader](https://www.webpackjs.com/loaders/babel-loader/)。
 
 ### plugins
+
 插件用于扩展 webpack 的功能，可以在 webpack 的构建过程中执行各种任务。插件通常用于优化构建过程、生成额外的文件等。插件通常需要通过 npm 安装，然后在 webpack 配置文件中引入并使用。
+常用的插件：
+- html-webpack-plugin
+- min-css-extract-plugin
+- css-minimizer-webpack-plugin
+- webpack-bundle-analyzer
 
 ## 分割代码
+
+把代码分离到不同的 bundle 中，然后便能按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle、控制资源加载优先级，可以减小加载时间。
+分割代码的方法有：
+
+1. 入口起点：使用 entry 配置手动分离代码。
+   在 entry 中配置多个入口, 但会导致相同的模块重复打包。
+
+```js
+module.exports = {
+  entry: {
+    index: "./src/index.js",
+    print: "./src/print.js",
+  },
+};
+```
+
+2. 防止重复：使用 dependOn 共享一些公共模块，或使用 SplitChunksPlugin 去重和分离 chunk。
+
+```js
+module.exports = {
+  entry: {
+    index: {
+      import: "./src/index.js",
+      dependOn: "public-m",
+    },
+    print: {
+      import: "./src/print.js",
+      dependOn: "public-m",
+    },
+    "public-m": ["lodash", "axios"],
+  },
+};
+// 使用插件
+module.exports = {
+  //···
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+  },
+};
+```
+
+3. 动态导入：内部通过 import()语法来动态导入模块，当 webpack 解析到 import() 语法时，会自动进行代码分割。 只有使用到时在加载分出的那个 bundle.
+   webpack 还支持通过魔法注释来指定分割后的 chunk 名称，以及预获取和预加载文件
+
+- webpackChunkName: 'print' // 指定分割后的 chunk 名称
+- webpackPrefetch: true // 预获取，会在浏览器闲置时加载文件
+- webpackPreload: true // 预加载，会在父 chunk 加载时加载文件
+  **两者区别**：prefetch 会在浏览器闲置时加载文件，preload 会在父 chunk 加载时加载文件，prefetch 加载的文件优先级较低，preload 加载的文件优先级较高。简单说就是前者是加载那些某个时间段可能会用到的文件，后者是遇到了就马上并行加载就要用到的文件。 详情见 [代码分割](https://www.webpackjs.com/guides/code-splitting)。
+
+### 分析打包结果
+
+使用 webpack-bundle-analyzer 插件，可以生成一个可视化的 webpack 打包结果报告，方便我们分析打包结果，找出打包过程中的性能瓶颈。
+
+```js
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+
+module.exports = {
+  //···
+  plugins: [new BundleAnalyzerPlugin()],
+};
+```
