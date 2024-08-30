@@ -278,3 +278,29 @@ module.exports = {
   },
 };
 ```
+
+## 配置文件，区分环境
+
+module.exports 可以配置成一个函数可以获取命令运行时的参数： module.exports= (env ) => { return{...}}
+根据不同的环境生成不同的配置文件，相同的配置就提取为公共配置，最后使用 webpack-merge 插件来合并配置文件，
+
+```js
+const merge = require("webpack-merge");
+const common = require("./webpack.common.js");
+const dev = require("./webpack.dev.js");
+const prod = require("./webpack.prod.js");
+
+module.exports = (env) => {
+  if (env.production) {
+    return merge(common, prod);
+  } else {
+    return merge(common, dev);
+  }
+};
+```
+
+运行命令时使用 --env.production 或 --env.development 来指定环境。
+
+```bash
+npx webpack -c webpack.config.js --env.production
+```

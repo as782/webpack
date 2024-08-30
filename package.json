@@ -4,9 +4,10 @@
   "description": "",
   "private": "true",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack -c ./config/webpack.config.js --env production",
     "watch": "webpack --watch",
-    "start": "webpack serve --open"
+    "serve": "webpack serve -c ./config/webpack.config.js  --open",
+    "dev": "webpack  -c ./config/webpack.config.js --env development"
   },
   "keywords": [],
   "author": "",
@@ -17,10 +18,12 @@
     "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.9.1",
     "style-loader": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.10",
     "webpack": "^5.94.0",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.0.4",
+    "webpack-merge": "^6.0.1"
   },
   "dependencies": {
     "axios": "^1.7.5",
