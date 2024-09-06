@@ -1,0 +1,1 @@
+asset/sourece 会将文件将原样注入到 bundle 中
