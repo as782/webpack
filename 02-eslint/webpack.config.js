@@ -7,6 +7,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode:'development',
+    devServer:{
+        static: './dist',
+    },
     entry: './src/main.js',
     output: {
         filename: 'bundle.js',
@@ -14,10 +17,13 @@ module.exports = {
     },
     plugins: [
         new ESLintPlugin({
-            fix: true, // 自动修复
+            // fix: true, // 自动修复
             extensions: ['js'], // 检查的文件后缀
             exclude: ['node_modules'], // 排除的文件目录
-            context: path.resolve(__dirname, 'src'), // 检查的文件目录
+            // context: path.resolve(__dirname, 'src'), // 检查的文件目录
+            //  检查除了src外 其他js文件
+            context: path.resolve(__dirname),
+
         }),
         new HtmlWebpackPlugin()
 

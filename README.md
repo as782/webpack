@@ -304,3 +304,57 @@ module.exports = (env) => {
 ```bash
 npx webpack -c webpack.config.js --env.production
 ```
+
+## 热模块替换和热重载
+
+## source map
+
+## devServer
+
+## Eslint 在 webpack 中配置
+
+webpack 中使用之前可以使用 eslint-loader 来加载 eslint，后续通过使用配置 eslint-webpack-plugin 来配置 [eslint-webpack-plugin](https://www.webpackjs.com/plugins/eslint-webpack-plugin/#getting-started) 插件
+
+```js
+// eslint-webpack-plugin
+const ESLintPlugin = require("eslint-webpack-plugin");
+
+module.exports = {
+  //···
+  plugins: [
+    new ESLintPlugin({
+      // fix: true, // 自动修复
+      extensions: ["js"], // 检查的文件后缀
+      exclude: ["node_modules"], // 排除的文件目录
+      context: path.resolve(__dirname, "src"), // 检查的文件目录
+    }),
+  ],
+};
+```
+
+项目中配置 .eslintrc.js 文件 和下载依赖 eslint
+
+```js
+// .eslintrc.js
+module.exports = {
+  env: {
+    browser: true, // 适用于浏览器环境
+    es2021: true, // 支持 ES2021 及其特性
+  },
+  parserOptions: {
+    ecmaVersion: 12, // ES2021 语法版本（可以根据需要设置为 6, 8, 12 等）
+    sourceType: "module", // 使用 ES Module 语法
+  },
+  // 使用流行规则
+  // extends: ["eslint:recommended"],
+  rules: {
+    semi: "error", // 强制在语句末尾使用分号
+
+    "no-console": 1, // 禁止使用console
+    "no-var": 2, // 禁止使用var
+    "no-unused-vars": 2, // 禁止出现未使用的变量
+    "no-undef": 2, // 允许出现未定义的变量
+    // ...其他规则
+  },
+};
+```

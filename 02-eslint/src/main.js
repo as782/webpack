@@ -1,5 +1,6 @@
 // console.log("Hello World")
-let a =10;
-let b=20;
-let c=a+b;
-console.log(c);
+import test from '../test.js';
+ const a = 10;
+ var b = 20;
+console.log('s',a);
+test();
