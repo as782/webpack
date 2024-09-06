@@ -333,28 +333,97 @@ module.exports = {
 ```
 
 项目中配置 .eslintrc.js 文件 和下载依赖 eslint
+最新的 config, 需要 eslint.config.js/cjs/mjs 文件
 
 ```js
 // .eslintrc.js
-module.exports = {
-  env: {
-    browser: true, // 适用于浏览器环境
-    es2021: true, // 支持 ES2021 及其特性
-  },
-  parserOptions: {
-    ecmaVersion: 12, // ES2021 语法版本（可以根据需要设置为 6, 8, 12 等）
-    sourceType: "module", // 使用 ES Module 语法
-  },
-  // 使用流行规则
-  // extends: ["eslint:recommended"],
-  rules: {
-    semi: "error", // 强制在语句末尾使用分号
+// module.exports = {
+//   env: {
+//     browser: true, // 适用于浏览器环境
+//     es2021: true, // 支持 ES2021 及其特性
+//   },
+//   parserOptions: {
+//     ecmaVersion: 12, // ES2021 语法版本（可以根据需要设置为 6, 8, 12 等）
+//     sourceType: "module", // 使用 ES Module 语法
+//   },
+//   // 使用流行规则
+//   // extends: ["eslint:recommended"],
+//   rules: {
+//     semi: "error", // 强制在语句末尾使用分号
 
-    "no-console": 1, // 禁止使用console
-    "no-var": 2, // 禁止使用var
-    "no-unused-vars": 2, // 禁止出现未使用的变量
-    "no-undef": 2, // 允许出现未定义的变量
-    // ...其他规则
+//     "no-console": 1, // 禁止使用console
+//     "no-var": 2, // 禁止使用var
+//     "no-unused-vars": 2, // 禁止出现未使用的变量
+//     "no-undef": 2, // 允许出现未定义的变量
+//     // ...其他规则
+//   },
+// };
+
+// eslint.config.js
+const globals = require("globals");
+
+module.exports = [
+  {
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        ...globals.browser,
+      },
+    },
+    ignores: ["dist/**/*", "**.config.js"], // 忽略dist目录,忽略**.config.js
+    rules: {
+      semi: "error",
+      "no-console": "warn",
+      "no-var": "error",
+      "no-unused-vars": "error",
+      "no-undef": "error",
+    },
   },
-};
+];
+```
+
+## git hook
+
+git hook 可以在 git 操作时自动执行一些脚本， 就比如说在 commit 之前自动执行 eslint 检查，如果检查不通过则不允许提交代码。
+
+1. 手动添加文件
+
+- hooks 的目录在 .git/hooks 中，创建一个 pre-commit 文件，内容如下：
+
+```bash
+#!/bin/sh  这个注释，我在window，下要有不然 会报错 spwn: No such file or directory:
+echo "ssss自定义HOOK pre-commit 执行中..."
+
+# 1. 检查代码格式
+pnpm eslint
+
+```
+
+- 给文件添加执行权限
+
+```bash
+chmod +x .git/hooks/pre-commit
+```
+
+2. 或者创建自定义 hooks 文件目录 .githooks，在目录中创建 pre-commit 文件，内容同上。但是需要修改 .git/config 文件，添加如下内容：
+
+```bash
+git config core.hooksPath .githooks
+```
+
+3. 使用 husky 插件
+
+```bash
+pnpm add husky -D
+```
+
+在.husky 文件夹中创建 pre-commit 文件
+
+```bash
+
+echo "husky pre-commit 执行中..."
+
+# 1. 检查代码格式
+pnpm eslint
 ```

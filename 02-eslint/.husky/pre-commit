@@ -1,0 +1,5 @@
+ 
+echo "husky pre-commit 执行中..."
+
+# 1. 检查代码格式
+pnpm eslint 
