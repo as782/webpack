@@ -311,6 +311,60 @@ npx webpack -c webpack.config.js --env.production
 
 ## devServer
 
+## 模块解析 resolve
+
+1. alias: 配置别名，可以简化模块导入路径
+
+```js
+module.exports = {
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
+};
+```
+
+2. extensions : 配置模块解析时的文件扩展名，尝试按顺序解析这些后缀名。如果有多个文件有相同的名字，但后缀名不同，webpack 会解析列在数组首位的后缀的文件 并跳过其余的后缀。
+
+```js
+module.exports = {
+  resolve: {
+    extensions: [".js", ".json", ".vue"],
+  },
+};
+// 以上这样使用 resolve.extensions 会 覆盖默认数组，这就意味着 webpack 将不再尝试使用默认扩展来解析模块。然而你可以使用 '...' 访问默认拓展名
+module.exports = {
+  resolve: {
+    extensions: [".ts", "..."],
+  },
+};
+```
+
+3. modules: 配置模块解析时的搜索目录，默认值为 node_modules
+
+## 外部扩展 external
+
+external: 配置外部扩展，可以将某些模块标记为外部依赖，这样 webpack 就不会将这些模块打包到最终的 bundle 中。
+
+1. 将 jquery 使用 cdn 引入，配置 external
+2.
+
+````js
+module.exports = {
+  externalType: "script",
+  // externals: {
+  //   jquery: "jQuery",
+
+  // }
+  externals:[
+    jquery:[
+      "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js",
+      "jQuery"
+    ]
+  ]
+}
+
 ## Eslint 在 webpack 中配置
 
 webpack 中使用之前可以使用 eslint-loader 来加载 eslint，后续通过使用配置 eslint-webpack-plugin 来配置 [eslint-webpack-plugin](https://www.webpackjs.com/plugins/eslint-webpack-plugin/#getting-started) 插件
@@ -330,7 +384,7 @@ module.exports = {
     }),
   ],
 };
-```
+````
 
 项目中配置 .eslintrc.js 文件 和下载依赖 eslint
 最新的 config, 需要 eslint.config.js/cjs/mjs 文件
