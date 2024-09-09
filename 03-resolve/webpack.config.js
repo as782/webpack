@@ -25,7 +25,8 @@ module.exports = {
         alias: {
             '@': path.resolve(__dirname, 'src'),
             "D":path.resolve(__dirname, 'd')
-        }
-   }
+        },
+        extensions:['.json','...']
+   },
 
 };

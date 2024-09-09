@@ -1,4 +1,4 @@
-import { test2 } from "D/test2";
+import { test2 } from "D/test2.js";
 
 console.log('env global');
  test2();
