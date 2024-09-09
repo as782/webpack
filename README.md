@@ -348,9 +348,8 @@ module.exports = {
 external: 配置外部扩展，可以将某些模块标记为外部依赖，这样 webpack 就不会将这些模块打包到最终的 bundle 中。
 
 1. 将 jquery 使用 cdn 引入，配置 external
-2.
 
-````js
+```js
 module.exports = {
   externalType: "script",
   // externals: {
@@ -364,6 +363,33 @@ module.exports = {
     ]
   ]
 }
+```
+
+## tree shaking
+
+通常用于描述移除 JavaScript 上下文中的死代码。它依赖于 ES2015 模块语法的 静态结构 特性，例如 import 和 export。
+死代码（dead code）是指程序中一段已经不会被执行的代码，通常是因为重构、优化或者逻辑错误导致的。这些代码可能是之前版本的遗留物，或者某些条件下永远不会被执行的代码。
+
+- webpack 中可以通过配置 optimization.usedExports 为 true 来开启 tree shaking。
+- 在 package.json 中添加 sideEffects 字段，告诉 webpack 哪些模块是没有副作用的，可以安全地进行 tree shaking。**sideEffects: false，表示全部没有副作用，会将 css 也移除**
+
+```json
+{
+  "name": "your-package-name",
+  "sideEffects": false
+}
+```
+
+```json
+{
+  "name": "your-package-name",
+  "sideEffects": ["src/polyfills.js", "**/*.css"]
+}
+```
+
+- sideEffects 和 usedExports（更多地被称为 tree shaking）是两种不同的优化方式。
+  sideEffects 更为有效 是因为它允许跳过整个模块/文件和整个文件子树。
+  usedExports 依赖于 terser 检测语句中的副作用。它是一个 JavaScript 任务而且不像 sideEffects 一样简单直接。并且由于规范认为副作用需要被评估，因此它不能跳过子树/依赖项。
 
 ## Eslint 在 webpack 中配置
 
@@ -384,7 +410,7 @@ module.exports = {
     }),
   ],
 };
-````
+```
 
 项目中配置 .eslintrc.js 文件 和下载依赖 eslint
 最新的 config, 需要 eslint.config.js/cjs/mjs 文件
